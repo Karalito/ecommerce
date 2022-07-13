@@ -1,0 +1,51 @@
+import { number, object, string, TypeOf } from 'zod';
+
+const payload = {
+  body: object({
+    title: string({
+      required_error: 'Title field is required',
+    }),
+    description: string({
+      required_error: 'Description is required',
+    }).min(60, 'Description should be at least 60 characters long'),
+    price: number({
+      required_error: 'Price is required',
+    }),
+    qty: number({
+      required_error: 'Quantity is required',
+    }),
+    image: string({
+      required_error: 'Image is Required',
+    }),
+  }),
+};
+
+const params = {
+  params: object({
+    productId: string({
+      required_error: 'Product id is required',
+    }),
+  }),
+};
+
+export const createProductSchema = object({
+  ...payload,
+});
+
+export const getProductSchema = object({
+  ...params,
+});
+
+export const updateProductSchema = object({
+  ...payload,
+  ...params,
+});
+
+export const deleteProductSchema = object({
+  ...params,
+});
+
+export type CreateProductInput = TypeOf<typeof createProductSchema>;
+export type ReadProductInput = TypeOf<typeof getProductSchema>;
+export type UpdateProductInput = TypeOf<typeof updateProductSchema>;
+export type DeleteProductInput = TypeOf<typeof deleteProductSchema>;
